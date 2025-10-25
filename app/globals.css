@@ -1,0 +1,291 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  body {
+    @apply antialiased;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
+  }
+  
+  html {
+    scroll-behavior: smooth;
+  }
+}
+
+@layer components {
+  /* Button Components */
+  .btn-primary {
+    @apply px-6 py-3 bg-amber-600 hover:bg-amber-700 text-white font-semibold rounded-lg shadow-lg transition-all duration-200 transform hover:scale-105 active:scale-95;
+  }
+  
+  .btn-secondary {
+    @apply px-6 py-3 bg-white hover:bg-gray-50 text-amber-900 font-semibold rounded-lg shadow-lg transition-all duration-200 border border-amber-200 hover:border-amber-300;
+  }
+  
+  /* Card Components */
+  .card {
+    @apply bg-white rounded-lg shadow-lg p-6 transition-all duration-200 hover:shadow-xl;
+  }
+  
+  /* Puzzle Specific */
+  .puzzle-piece {
+    @apply rounded shadow-md hover:shadow-lg transition-all duration-200 cursor-move border-2 border-white hover:border-amber-300;
+  }
+  
+  .puzzle-board {
+    @apply bg-white/90 rounded-lg shadow-2xl backdrop-blur-sm;
+  }
+}
+
+@layer utilities {
+  /* Animation Classes */
+  .animate-float {
+    animation: float 3s ease-in-out infinite;
+  }
+  
+  .animate-float-delay {
+    animation: float 3s ease-in-out 1s infinite;
+  }
+  
+  .animate-float-delay-2 {
+    animation: float 3s ease-in-out 2s infinite;
+  }
+  
+  /* Glass Effect */
+  .glass {
+    @apply bg-white/10 backdrop-blur-md border border-white/20;
+  }
+  
+  /* Text Shadows */
+  .text-shadow {
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  }
+  
+  .text-shadow-lg {
+    text-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  }
+  
+  /* Gradients */
+  .gradient-amber {
+    background: linear-gradient(135deg, #fbbf24, #f59e0b);
+  }
+  
+  .gradient-cozy {
+    background: linear-gradient(135deg, #fffbeb, #fed7aa);
+  }
+}
+
+/* Custom Animations */
+@keyframes float {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-20px);
+  }
+}
+
+@keyframes bounceIn {
+  0% {
+    transform: scale(0.3);
+    opacity: 0;
+  }
+  50% {
+    transform: scale(1.05);
+  }
+  70% {
+    transform: scale(0.9);
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+@keyframes shimmer {
+  0% {
+    background-position: -1000px 0;
+  }
+  100% {
+    background-position: 1000px 0;
+  }
+}
+
+@keyframes pulse-glow {
+  0%, 100% {
+    box-shadow: 0 0 5px rgba(245, 158, 11, 0.5);
+  }
+  50% {
+    box-shadow: 0 0 20px rgba(245, 158, 11, 0.8);
+  }
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #f1f5f9;
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #d97706;
+  border-radius: 4px;
+  transition: background 0.2s;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #b45309;
+}
+
+::-webkit-scrollbar-corner {
+  background: #f1f5f9;
+}
+
+/* Firefox Scrollbar */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: #d97706 #f1f5f9;
+}
+
+/* Selection Color */
+::selection {
+  background: #fbbf24;
+  color: #78350f;
+}
+
+::-moz-selection {
+  background: #fbbf24;
+  color: #78350f;
+}
+
+/* Focus Styles */
+button:focus,
+input:focus,
+select:focus,
+textarea:focus {
+  outline: 2px solid #f59e0b;
+  outline-offset: 2px;
+}
+
+/* Loading Animations */
+.loading-shimmer {
+  background: linear-gradient(90deg, #f1f5f9 25%, #e2e8f0 50%, #f1f5f9 75%);
+  background-size: 1000px 100%;
+  animation: shimmer 2s infinite;
+}
+
+/* Drag and Drop Styles */
+.dragging {
+  @apply z-50 rotate-6 scale-110 shadow-2xl;
+  filter: drop-shadow(0 25px 25px rgb(0 0 0 / 0.15));
+}
+
+.drop-zone {
+  @apply border-2 border-dashed border-amber-300 bg-amber-50/50 transition-all duration-200;
+}
+
+.drop-zone.active {
+  @apply border-amber-600 bg-amber-100/75 scale-105;
+}
+
+/* Weather Effects */
+.rain-drop {
+  @apply absolute w-0.5 h-8 bg-blue-200/30 animate-pulse;
+}
+
+.snow-flake {
+  @apply absolute w-2 h-2 bg-white rounded-full animate-pulse;
+}
+
+.falling-leaf {
+  @apply absolute text-xl animate-spin;
+}
+
+/* Pet Animation */
+.pet-container {
+  @apply absolute bottom-20 left-20 w-32 h-32 transition-all duration-500;
+}
+
+.pet-sleeping {
+  @apply animate-pulse;
+}
+
+.pet-walking {
+  @apply animate-bounce;
+}
+
+.pet-playing {
+  @apply animate-spin;
+}
+
+/* Responsive Design Helpers */
+@media (max-width: 640px) {
+  .mobile-hide {
+    display: none;
+  }
+  
+  .puzzle-board {
+    max-width: 90vw;
+    max-height: 60vh;
+  }
+  
+  .puzzle-box {
+    width: 100%;
+    max-width: 300px;
+    height: 400px;
+  }
+}
+
+/* High Contrast Mode Support */
+@media (prefers-contrast: high) {
+  .puzzle-piece {
+    @apply border-4 border-black;
+  }
+  
+  .card {
+    @apply border border-gray-800;
+  }
+}
+
+/* Reduced Motion Support */
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+  
+  .animate-float,
+  .animate-float-delay,
+  .animate-float-delay-2,
+  .animate-spin,
+  .animate-bounce,
+  .animate-pulse {
+    animation: none;
+  }
+}
+
+/* Print Styles */
+@media print {
+  .no-print {
+    display: none !important;
+  }
+  
+  body {
+    background: white !important;
+  }
+}
+
+/* Dark Mode Support (for future enhancement) */
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg-primary: #1f2937;
+    --text-primary: #f9fafb;
+    --accent: #fbbf24;
+  }
+}
