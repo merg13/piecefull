@@ -73,8 +73,6 @@ A beautiful, cozy jigsaw puzzle creator and solver with seasonal themes, lofi mu
 
 4. **Set up the database**
    ```bash
-   npx prisma migrate dev --name init
-   npx prisma generate
    ```
 
 5. **Start the development server**
@@ -101,7 +99,6 @@ cozy-puzzle-app/
 │   └── solver/           # Puzzle solving components
 ├── config/               # Configuration files
 ├── lib/                  # Utility libraries
-├── prisma/              # Database schema and migrations
 ├── store/               # Zustand state management
 ├── types/               # TypeScript type definitions
 └── public/              # Static assets
@@ -120,7 +117,6 @@ cozy-puzzle-app/
 
 ### Backend
 - **Next.js API Routes** - Server-side API
-- **Prisma** - Database ORM
 - **PostgreSQL** - Database
 - **AWS S3** - Image storage
 
@@ -208,10 +204,7 @@ cozy-puzzle-app/
 npm run dev
 
 # Run database migrations
-npx prisma migrate dev
 
-# View database in Prisma Studio
-npx prisma studio
 
 # Build for production
 npm run build
@@ -256,7 +249,6 @@ NEXT_PUBLIC_APP_URL="https://your-domain.com"
 
 ### Database Schema
 
-The app uses Prisma with PostgreSQL. Key models:
 
 - **Puzzle**: Stores puzzle metadata and piece data
 - **PuzzleSolve**: Tracks completion statistics

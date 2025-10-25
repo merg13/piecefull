@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { prisma } from '@/lib/prisma'
+import { supabase } from '@/lib/supabaseClient'
 
 export async function POST(request: NextRequest) {
   try {
@@ -7,19 +7,29 @@ export async function POST(request: NextRequest) {
     const { puzzleId, solveTime } = body
     
     // Save solve record
-    await prisma.puzzleSolve.create({
-      data: {
-        puzzleId,
-        solveTime
-      }
-    })
-    
+    const { error: solveError } = await supabase
+      .from('puzzleSolve')
+      .insert([
+        {
+          puzzleId,
+          solveTime
+        }
+      ]);
+
+    if (solveError) {
+      throw solveError;
+    }
+
     // Increment solve count
-    await prisma.puzzle.update({
-      where: { id: puzzleId },
-      data: { solveCount: { increment: 1 } }
-    })
-    
+    const { error: updateError } = await supabase
+      .from('puzzle')
+      .update({ solveCount: supabase.rpc('increment', { x: 1 }) })
+      .eq('id', puzzleId);
+
+    if (updateError) {
+      throw updateError;
+    }
+
     return NextResponse.json({ success: true })
   } catch (error) {
     console.error('Complete puzzle error:', error)

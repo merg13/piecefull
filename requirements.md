@@ -17,7 +17,6 @@ Confetti: canvas-confetti
 Backend
 
 API: Next.js API Routes
-Database: PostgreSQL with Prisma ORM
 File Storage: AWS S3 or Cloudflare R2
 Image Processing: Sharp (serverless functions)
 
@@ -113,7 +112,6 @@ npm install framer-motion howler canvas-confetti
 npm install konva react-konva
 
 # Database & API
-npm install prisma @prisma/client
 npm install @aws-sdk/client-s3 @aws-sdk/s3-request-presigner
 npm install sharp
 
@@ -123,8 +121,6 @@ npm install clsx tailwind-merge
 
 # Dev dependencies
 npm install -D @types/howler @types/node
-1.3 Initialize Prisma
-bashnpx prisma init
 1.4 Configure Environment Variables
 Create .env.local:
 env# Database
@@ -140,10 +136,6 @@ AWS_REGION="us-east-1"
 NEXT_PUBLIC_APP_URL="http://localhost:3000"
 
 Phase 2: Database Schema & Setup
-2.1 Define Prisma Schema
-Edit prisma/schema.prisma:
-prismagenerator client {
-  provider = "prisma-client-js"
 }
 
 datasource db {
@@ -199,9 +191,6 @@ model PuzzleSolve {
   @@index([puzzleId])
 }
 2.2 Run Migrations
-bashnpx prisma migrate dev --name init
-npx prisma generate
-2.3 Create Prisma Client Instance
 Create lib/prisma.ts:
 typescriptimport { PrismaClient } from '@prisma/client'
 

@@ -39,16 +39,42 @@ export default function CreatePage() {
       }
       
       const data = await response.json()
-      setImageUrl(data.imageUrl)
       
-      // Get image dimensions
-      const img = new Image()
-      img.onload = () => {
-        setImageSize({ width: img.width, height: img.height })
-        setUploadProgress(100)
-        setTimeout(() => setUploadProgress(0), 1000)
+      // Create a promise to handle image loading
+      const loadImage = () => {
+        return new Promise<{ width: number; height: number }>((resolve, reject) => {
+          const img = new Image()
+          
+          const timeout = setTimeout(() => {
+            reject(new Error('Image load timeout'))
+          }, 10000) // 10 second timeout
+          
+          img.onload = () => {
+            clearTimeout(timeout)
+            resolve({ width: img.width, height: img.height })
+          }
+          
+          img.onerror = () => {
+            clearTimeout(timeout)
+            reject(new Error('Failed to load image'))
+          }
+          
+          img.src = data.imageUrl
+        })
       }
-      img.src = data.imageUrl
+      
+      try {
+        setUploadProgress(90)
+        const dimensions = await loadImage()
+        setImageSize(dimensions)
+        setUploadProgress(100)
+        setTimeout(() => setUploadProgress(0), 500)
+        setImageUrl(data.imageUrl)
+      } catch (error) {
+        console.error('Failed to load image:', error)
+        setUploadProgress(0)
+        alert('Failed to load image. Please try again.')
+      }
     } catch (error) {
       console.error('Upload failed:', error)
       setUploadProgress(0)
@@ -89,14 +115,14 @@ export default function CreatePage() {
   }
   
   return (
-    <div className="min-h-screen bg-gradient-to-br from-amber-50 to-orange-100 p-8">
-      <div className="max-w-6xl mx-auto">
+    <div className="min-h-screen bg-gradient-to-br from-amber-50 to-orange-100 p-8 flex flex-col">
+      <div className="max-w-6xl mx-auto flex-1 flex flex-col w-full">
         <h1 className="text-4xl font-bold text-center mb-8 text-amber-900">
           Create Your Cozy Puzzle
         </h1>
         
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-          <div className="space-y-6">
+        <div className={`grid grid-cols-1 lg:grid-cols-2 gap-8 ${!imageUrl ? 'flex-1 items-center' : ''}`}>
+          <div className={`space-y-6 ${!imageUrl ? 'flex flex-col justify-center' : ''}`}>
             <div className="relative">
               <ImageUploader onUpload={handleImageUpload} />
               {uploadProgress > 0 && uploadProgress < 100 && (

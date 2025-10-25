@@ -2,6 +2,7 @@
 
 import { motion } from 'framer-motion'
 import { usePuzzleStore } from '@/store/puzzleStore'
+import { getJigsawPath } from './PuzzleBoard'
 
 interface PuzzleBoxProps {
   imageUrl: string
@@ -34,19 +35,41 @@ export default function PuzzleBox({ imageUrl }: PuzzleBoxProps) {
           {unplacedPieces.map((piece) => {
             const cols = Math.sqrt(pieces.length)
             const pieceDisplaySize = 60 // Size for pieces in the box
+            const path = getJigsawPath(piece.shape, pieceDisplaySize)
             
             return (
-              <div
+              <svg
                 key={piece.id}
-                className="aspect-square bg-white rounded shadow-md hover:shadow-lg transition cursor-pointer border-2 border-gray-300 hover:border-amber-400"
-                style={{
-                  backgroundImage: `url(${imageUrl})`,
-                  backgroundPosition: `-${(piece.correctX / 600) * pieceDisplaySize * cols}px -${(piece.correctY / 600) * pieceDisplaySize * cols}px`,
-                  backgroundSize: `${pieceDisplaySize * cols}px ${pieceDisplaySize * cols}px`,
-                  width: `${pieceDisplaySize}px`,
-                  height: `${pieceDisplaySize}px`
-                }}
-              />
+                width={pieceDisplaySize}
+                height={pieceDisplaySize}
+                viewBox={`0 0 ${pieceDisplaySize} ${pieceDisplaySize}`}
+                style={{ display: 'block', cursor: 'pointer' }}
+                className="shadow-md hover:shadow-lg transition border-2 border-gray-300 hover:border-amber-400 rounded"
+              >
+                <defs>
+                  <pattern
+                    id={`box-piece-img-${piece.id}`}
+                    patternUnits="objectBoundingBox"
+                    width={1}
+                    height={1}
+                  >
+                    <image
+                      href={imageUrl}
+                      x={-piece.correctX}
+                      y={-piece.correctY}
+                      width={pieceDisplaySize * cols}
+                      height={pieceDisplaySize * cols}
+                      preserveAspectRatio="xMinYMin slice"
+                    />
+                  </pattern>
+                </defs>
+                <path
+                  d={path}
+                  fill={`url(#box-piece-img-${piece.id})`}
+                  stroke="#fff"
+                  strokeWidth={2}
+                />
+              </svg>
             )
           })}
         </div>

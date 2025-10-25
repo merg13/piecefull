@@ -3,6 +3,7 @@
 import { useEffect, useState } from 'react'
 import { use } from 'react'
 import { usePuzzleStore } from '@/store/puzzleStore'
+import { PuzzlePiece } from '@/types/puzzle'
 import CozyBackground from '@/components/solver/CozyBackground'
 import PuzzleBoard from '@/components/solver/PuzzleBoard'
 import PuzzleBox from '@/components/solver/PuzzleBox'
@@ -11,8 +12,8 @@ import IntroSequence from '@/components/solver/IntroSequence'
 import CompletionModal from '@/components/solver/CompletionModal'
 import LofiMusicPlayer from '@/components/solver/LofiMusicPlayer'
 
-export default function PuzzleSolverPage({ params }: { params: Promise<{ link: string }> }) {
-  const { link } = use(params)
+export default function PuzzleSolverPage({ params }: { params: { link: string } }) {
+  const link = params.link
   const [puzzle, setPuzzle] = useState<any>(null)
   const [showIntro, setShowIntro] = useState(true)
   const [loading, setLoading] = useState(true)
@@ -45,10 +46,10 @@ export default function PuzzleSolverPage({ params }: { params: Promise<{ link: s
             setShowIntro(false)
           } catch {
             // Invalid saved progress, start fresh
-            setPieces(data.piecesData)
+            setPieces(data.piecesData as PuzzlePiece[])
           }
         } else {
-          setPieces(data.piecesData)
+          setPieces(data.piecesData as PuzzlePiece[])
         }
       } catch (error) {
         console.error('Failed to fetch puzzle:', error)
